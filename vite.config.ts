@@ -5,6 +5,7 @@ import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
+  base: '/QuizApp/';
   return {
     plugins: [react(), tailwindcss()],
     define: {
@@ -22,3 +23,4 @@ export default defineConfig(({mode}) => {
     },
   };
 });
+

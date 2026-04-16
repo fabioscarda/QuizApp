@@ -1,0 +1,5 @@
+{
+  "name": "QuizMaster",
+  "description": "A sleek, single-page quiz application with local storage persistence and JSON upload capabilities.",
+  "requestFramePermissions": []
+}

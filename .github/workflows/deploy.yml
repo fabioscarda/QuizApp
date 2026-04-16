@@ -1,4 +1,4 @@
-name: Drawing App
+name: QuizApp
 
 on:
   push:
@@ -22,7 +22,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd V2.0/draw_app
           npm install
 
       - name: Build

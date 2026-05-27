@@ -115,39 +115,70 @@ export const QuizSetupModal: React.FC<QuizSetupModalProps> = ({ isOpen, onClose,
               <div className="space-y-4">
                 <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
                   <Timer className="w-4 h-4 text-indigo-500" />
-                  Time per question (seconds)
+                  Time per question
                 </label>
                 
-                <div className="grid grid-cols-4 gap-2">
-                  {timePresets.map(t => (
-                    <button
-                      key={t}
-                      onClick={() => setTimePerQuestion(t)}
-                      className={`px-2 py-3 rounded-xl border-2 font-bold text-xs transition-all ${
-                        timePerQuestion === t 
-                          ? 'border-indigo-600 bg-indigo-50 text-indigo-600 shadow-sm' 
-                          : 'border-gray-100 text-gray-500 hover:border-indigo-200'
-                      }`}
-                    >
-                      {t}s
-                    </button>
-                  ))}
-                </div>
-                
-                <div className="relative">
-                  <input
-                    type="number"
-                    placeholder="Custom time..."
-                    value={timePerQuestion}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value);
-                      if (!isNaN(val)) {
-                        setTimePerQuestion(Math.max(5, val));
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => setTimePerQuestion(0)}
+                    className={`px-4 py-3 rounded-xl border-2 font-bold text-sm transition-all ${
+                      timePerQuestion === 0 
+                        ? 'border-indigo-600 bg-indigo-50 text-indigo-600 shadow-sm' 
+                        : 'border-gray-100 text-gray-500 hover:border-indigo-200'
+                    }`}
+                  >
+                    Senza tempo
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (timePerQuestion === 0) {
+                        setTimePerQuestion(30);
                       }
                     }}
-                    className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-indigo-500 focus:ring-0 outline-none font-bold transition-all"
-                  />
+                    className={`px-4 py-3 rounded-xl border-2 font-bold text-sm transition-all ${
+                      timePerQuestion > 0 
+                        ? 'border-indigo-600 bg-indigo-50 text-indigo-600 shadow-sm' 
+                        : 'border-gray-100 text-gray-500 hover:border-indigo-200'
+                    }`}
+                  >
+                    A tempo
+                  </button>
                 </div>
+
+                {timePerQuestion > 0 && (
+                  <div className="space-y-3 pt-2">
+                    <div className="grid grid-cols-4 gap-2">
+                      {timePresets.map(t => (
+                        <button
+                          key={t}
+                          onClick={() => setTimePerQuestion(t)}
+                          className={`px-2 py-3 rounded-xl border-2 font-bold text-xs transition-all ${
+                            timePerQuestion === t 
+                              ? 'border-indigo-600 bg-indigo-50 text-indigo-600 shadow-sm' 
+                              : 'border-gray-100 text-gray-500 hover:border-indigo-200'
+                          }`}
+                        >
+                          {t}s
+                        </button>
+                      ))}
+                    </div>
+                    
+                    <div className="relative">
+                      <input
+                        type="number"
+                        placeholder="Custom time..."
+                        value={timePerQuestion}
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value);
+                          if (!isNaN(val)) {
+                            setTimePerQuestion(Math.max(5, val));
+                          }
+                        }}
+                        className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-indigo-500 focus:ring-0 outline-none font-bold transition-all"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Feedback Option */}
@@ -185,7 +216,11 @@ export const QuizSetupModal: React.FC<QuizSetupModalProps> = ({ isOpen, onClose,
 
               <div className="p-4 bg-indigo-50 rounded-2xl border border-indigo-100">
                 <p className="text-sm text-indigo-700 leading-relaxed">
-                  <span className="font-bold">Note:</span> Total time will be <span className="font-bold">{(count === 0 ? total : count) * timePerQuestion}s</span>.
+                  <span className="font-bold">Note:</span> {timePerQuestion === 0 ? (
+                    <span>Tempo illimitato per completare il quiz.</span>
+                  ) : (
+                    <span>Tempo totale calcolato: <span className="font-bold">{Math.floor(((count === 0 ? total : count) * timePerQuestion) / 60)}m {((count === 0 ? total : count) * timePerQuestion) % 60}s</span>.</span>
+                  )}
                 </p>
               </div>
             </div>

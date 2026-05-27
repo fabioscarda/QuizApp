@@ -46,13 +46,12 @@ export default function App() {
 
     setTimePerQuestion(time);
     setShowImmediateFeedback(feedback);
-    let sessionQuestions = [...selectedQuizForSetup.questions];
     
-    // Randomize and slice if count is less than total
-    if (count < selectedQuizForSetup.questions.length) {
-      sessionQuestions = sessionQuestions
-        .sort(() => Math.random() - 0.5)
-        .slice(0, count);
+    // Always randomize question order
+    let sessionQuestions = [...selectedQuizForSetup.questions].sort(() => Math.random() - 0.5);
+    
+    if (count > 0 && count < selectedQuizForSetup.questions.length) {
+      sessionQuestions = sessionQuestions.slice(0, count);
     }
 
     const sessionQuiz: Quiz = {
